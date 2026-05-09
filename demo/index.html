@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>我是教练 · Demo</title>
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部入场区 -->
+    <header class="top-bar">
+      <div class="entry-block">
+        <button class="btn-entry">入场</button>
+        <div class="goal-panel" id="goalPanel" title="长按查看说明">
+          <div class="goal-row">
+            <span class="goal-label">累计</span>
+            <span class="goal-total" id="goalTotal">2000</span>
+          </div>
+          <div class="goal-row">
+            <span class="goal-label">余额</span>
+            <span class="goal-balance" id="goalBalance">2000</span>
+          </div>
+        </div>
+      </div>
+      <div class="title">我是教练</div>
+      <button class="btn-world" id="btnWorld" title="环球世界">
+        <span class="globe">🌍</span>
+      </button>
+    </header>
+
+    <!-- 球场比分 + 进攻方向 -->
+    <section class="scoreboard">
+      <div class="score-arrow"></div>
+      <div class="score-row">
+        <div class="team team-home">
+          <span class="team-label">我方</span>
+        </div>
+        <div class="score-center">
+          <span class="score score-home" id="scoreHome">0</span>
+          <span class="score-sep">:</span>
+          <span class="score score-away" id="scoreAway">0</span>
+        </div>
+        <div class="team team-away">
+          <span class="team-label">敌方</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 比赛计时器 -->
+    <section class="match-clock" id="matchClock">
+      <span class="clock-icon">⏱</span>
+      <span class="clock-text" id="clockText">0′ / 90′</span>
+      <span class="clock-tag" id="clockTag"></span>
+    </section>
+
+    <!-- 球场九宫格 -->
+    <section class="pitch-wrapper">
+      <div class="pitch" id="pitch">
+        <!-- 静态球场元素 -->
+        <div class="pitch-bg">
+          <div class="center-circle"></div>
+          <div class="center-line"></div>
+          <div class="penalty-area top"></div>
+          <div class="penalty-area bottom"></div>
+          <div class="goal-net top"></div>
+          <div class="goal-net bottom"></div>
+          <!-- 22 名球员包裹在 .formation 中，整体队形随攻守潮汐左右推进/回收 -->
+          <div class="formation home-team">
+            <!-- 我方红队（攻方向→） -->
+            <div class="player home gk"  style="--x:10%; --y:51%;"></div>
+            <div class="player home def" style="--x:24%; --y:18%;"></div>
+            <div class="player home def" style="--x:26%; --y:38%;"></div>
+            <div class="player home def" style="--x:22%; --y:60%;"></div>
+            <div class="player home def" style="--x:25%; --y:82%;"></div>
+            <div class="player home mid" style="--x:42%; --y:24%;"></div>
+            <div class="player home mid" style="--x:46%; --y:46%;"></div>
+            <div class="player home mid" style="--x:43%; --y:72%;"></div>
+            <div class="player home fwd" style="--x:62%; --y:22%;"></div>
+            <div class="player home fwd" style="--x:65%; --y:50%;"></div>
+            <div class="player home fwd" style="--x:60%; --y:76%;"></div>
+          </div>
+          <div class="formation away-team">
+            <!-- 敌方蓝队 -->
+            <div class="player away gk"  style="--x:90%; --y:49%;"></div>
+            <div class="player away def" style="--x:77%; --y:20%;"></div>
+            <div class="player away def" style="--x:74%; --y:40%;"></div>
+            <div class="player away def" style="--x:78%; --y:62%;"></div>
+            <div class="player away def" style="--x:75%; --y:80%;"></div>
+            <div class="player away mid" style="--x:57%; --y:28%;"></div>
+            <div class="player away mid" style="--x:55%; --y:52%;"></div>
+            <div class="player away mid" style="--x:58%; --y:74%;"></div>
+            <div class="player away fwd" style="--x:38%; --y:26%;"></div>
+            <div class="player away fwd" style="--x:36%; --y:50%;"></div>
+            <div class="player away fwd" style="--x:40%; --y:76%;"></div>
+          </div>
+        </div>
+        <!-- 9 宫格 -->
+        <div class="grid" id="grid"></div>
+        <!-- 场上形势播报（球场正中） -->
+        <div class="report-overlay" id="reportBody">
+          <span class="placeholder">教练，请在球场上做出决策！</span>
+        </div>
+      </div>
+      <p class="pitch-tip">点击足球发起进攻，命中三次即可进球得分，抽得国家卡片，赢取商城福利</p>
+      <p class="pitch-tip pitch-tip-bonus">0失误点击进球、3球领先帽子戏法、反超比分、压哨绝杀，都可一次抽得多个国家卡片</p>
+    </section>
+
+    <!-- 进度条 -->
+    <section class="progress-section">
+      <div class="progress-wrap" id="progressBar" title="点击查看玩法说明">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-balls">
+          <div class="prog-ball" data-idx="0">⚽</div>
+          <div class="prog-ball" data-idx="1">⚽</div>
+          <div class="prog-ball" data-idx="2">⚽</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 国家卡片掉落动效层 -->
+  <div class="card-drop hidden" id="cardDrop">
+    <div class="country-card" id="dropCard">
+      <div class="drop-badge" id="dropBadge"></div>
+      <div class="drop-counter" id="dropCounter"></div>
+      <div class="flag" id="dropFlag"></div>
+      <div class="name" id="dropName"></div>
+      <div class="desc" id="dropDesc"></div>
+      <div class="star" id="dropStar"></div>
+      <button class="btn-confirm" id="btnDropConfirm">收入环球世界</button>
+    </div>
+  </div>
+
+  <!-- 环球世界弹窗 -->
+  <div class="modal hidden" id="worldModal">
+    <div class="modal-mask"></div>
+    <div class="modal-panel">
+      <header class="modal-head">
+        <h2>环球世界</h2>
+        <div class="counts">
+          <span>已收集 <b id="ownedCount">0</b> / 48</span>
+          <span class="rights">权益次数 <b id="rightCount">0</b> / 3</span>
+        </div>
+        <button class="modal-close" id="btnCloseWorld">✕</button>
+      </header>
+
+      <div class="world-globe" id="worldGlobe">
+        <!-- 三档分区 -->
+        <div class="tier tier-1" data-tier="1"></div>
+        <div class="tier tier-2" data-tier="2"></div>
+        <div class="tier tier-3" data-tier="3"></div>
+      </div>
+
+      <p class="world-tip">每收集 16 个国家解锁 1 次商城限定权益</p>
+    </div>
+  </div>
+
+  <!-- 国家详情卡片 -->
+  <div class="modal hidden" id="detailModal">
+    <div class="modal-mask"></div>
+    <div class="country-card big" id="detailCard">
+      <div class="flag" id="detailFlag"></div>
+      <div class="name" id="detailName"></div>
+      <div class="desc" id="detailDesc"></div>
+      <div class="star" id="detailStar"></div>
+      <button class="btn-confirm" id="btnCloseDetail">关闭</button>
+    </div>
+  </div>
+
+  <!-- 解锁权益卡片 -->
+  <div class="modal hidden" id="unlockModal">
+    <div class="modal-mask"></div>
+    <div class="unlock-card">
+      <button class="modal-close" id="btnCloseUnlock">✕</button>
+      <div class="unlock-anim">🎁</div>
+      <h3>恭喜解锁兑换商城限定礼物权益 1 次</h3>
+      <p class="unlock-tier" id="unlockTier"></p>
+      <div class="unlock-actions">
+        <button class="btn-secondary" id="btnContinue">继续收集</button>
+        <button class="btn-primary" id="btnGoStore">前往领取</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全场结束弹窗 -->
+  <div class="modal hidden" id="fulltimeModal">
+    <div class="modal-mask"></div>
+    <div class="unlock-card">
+      <div class="unlock-anim">🏟️</div>
+      <h3>全场结束</h3>
+      <p class="ft-final" id="ftFinal">最终比分 0 : 0</p>
+      <p class="ft-result" id="ftResult"></p>
+      <div class="unlock-actions">
+        <button class="btn-primary" id="btnNextMatch">开始新一局</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

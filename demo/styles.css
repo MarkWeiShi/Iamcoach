@@ -1,0 +1,818 @@
+/* ==========================================================
+   我是教练 + 环球世界 Demo · 样式
+   ========================================================== */
+:root {
+  --green-1: #2f7d3a;
+  --green-2: #266a30;
+  --green-3: #1f5a28;
+  --line: rgba(255, 255, 255, 0.85);
+  --gold: #f5c542;
+  --silver: #c8d0d6;
+  --bronze: #cd7f32;
+  --bg: #0f1a14;
+  --card-bg: rgba(20, 32, 24, 0.92);
+  --text: #f5f7f5;
+  --muted: #a8b3ac;
+  --accent: #ffd24a;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: radial-gradient(ellipse at top, #1b2e22, #0a140d 70%);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100vh;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 14px 24px;
+  position: relative;
+}
+
+/* ============ Top bar ============ */
+.top-bar {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.entry-block { display: flex; flex-direction: column; gap: 6px; }
+.btn-entry {
+  background: linear-gradient(135deg, #ffd24a, #ff9f1a);
+  color: #2a1900;
+  border: none; border-radius: 16px;
+  padding: 6px 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(255, 159, 26, 0.4);
+  cursor: pointer;
+}
+.goal-panel {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 12px;
+  min-width: 110px;
+}
+.goal-row { display: flex; justify-content: space-between; gap: 8px; }
+.goal-label { color: var(--muted); }
+.goal-total { color: #fff; font-weight: 600; }
+.goal-balance { color: var(--accent); font-weight: 700; }
+
+.title {
+  font-size: 18px; font-weight: 800;
+  letter-spacing: 2px;
+  background: linear-gradient(180deg, #fff, #ffd24a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-top: 4px;
+}
+
+.btn-world {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+}
+.btn-world .globe { display: inline-block; animation: spin 8s linear infinite; }
+
+/* ============ Pitch ============ */
+.pitch-wrapper { margin-bottom: 14px; }
+
+/* ============ Scoreboard ============ */
+.scoreboard {
+  position: relative;
+  margin-bottom: 12px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+}
+.score-arrow {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg,
+      rgba(255, 50, 50, 0.85) 0%,
+      rgba(230, 70, 110, 0.75) 30%,
+      rgba(160, 100, 200, 0.70) 50%,
+      rgba(70, 130, 230, 0.78) 72%,
+      rgba(40, 150, 255, 0.92) 100%);
+  /* 加宽的箭头形状 */
+  clip-path: polygon(0 8%, 86% 8%, 86% 0%, 100% 50%, 86% 100%, 86% 92%, 0 92%);
+  box-shadow: inset 0 0 24px rgba(0,0,0,0.3);
+}
+.score-arrow::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 18px,
+    rgba(255,255,255,0.08) 18px 20px
+  );
+  clip-path: inherit;
+}
+.score-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+.team {
+  display: flex; align-items: center;
+  flex: 0 0 auto;
+}
+.team-label {
+  font-size: 14px;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: 999px;
+  letter-spacing: 2px;
+  background: rgba(0,0,0,0.55);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+.team-home .team-label { color: #fff; border: 1.5px solid rgba(255,120,120,0.85); }
+.team-away .team-label { color: #fff; border: 1.5px solid rgba(120,180,255,0.85); }
+
+/* 中间比分 — 靠近且字体大 */
+.score-center {
+  display: flex; align-items: baseline; gap: 6px;
+  padding: 0 14px;
+}
+.score {
+  font-size: 44px;
+  font-weight: 900;
+  color: #fff;
+  min-width: 38px;
+  text-align: center;
+  text-shadow: 0 3px 8px rgba(0,0,0,0.85);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.score-home { color: #ffe6e6; }
+.score-away { color: #e6f0ff; }
+.score-sep {
+  font-size: 36px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.7);
+}
+.score.bump { animation: scoreBump 0.5s; }
+@keyframes scoreBump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.45); color: #fff5b0; }
+  100% { transform: scale(1); }
+}
+.pitch {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background:
+    /* 微光影 vignette */
+    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.35) 100%),
+    /* 横向草地条纹 */
+    repeating-linear-gradient(90deg,
+      #2f8a3c 0 9.09%,
+      #267a32 9.09% 18.18%);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 0 3px var(--line);
+}
+
+.pitch-bg { position: absolute; inset: 0; pointer-events: none; }
+.center-line {
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  width: 3px; margin-left: -1.5px;
+  background: var(--line);
+}
+.center-circle {
+  position: absolute; top: 50%; left: 50%;
+  height: 36%; aspect-ratio: 1;
+  border: 3px solid var(--line);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.center-circle::after {
+  content: ''; position: absolute;
+  top: 50%; left: 50%;
+  width: 6px; height: 6px; margin: -3px 0 0 -3px;
+  background: var(--line); border-radius: 50%;
+}
+.penalty-area {
+  position: absolute; top: 18%; bottom: 18%;
+  width: 18%;
+  border: 3px solid var(--line);
+}
+.penalty-area.top { left: 0; border-left: none; }
+.penalty-area.bottom { right: 0; border-right: none; }
+/* 小禁区 */
+.penalty-area::before {
+  content: ''; position: absolute;
+  top: 25%; bottom: 25%;
+  width: 38%;
+  border: 3px solid var(--line);
+}
+.penalty-area.top::before { left: 0; border-left: none; }
+.penalty-area.bottom::before { right: 0; border-right: none; }
+/* 点球点 */
+.penalty-area::after {
+  content: ''; position: absolute;
+  top: 50%;
+  width: 5px; height: 5px;
+  background: var(--line); border-radius: 50%;
+  transform: translateY(-50%);
+}
+.penalty-area.top::after { right: 12%; }
+.penalty-area.bottom::after { left: 12%; }
+.goal-net {
+  position: absolute; top: 42%; bottom: 42%;
+  width: 1.6%;
+  background: rgba(255,255,255,0.5);
+  border: 2px solid #fff;
+  background-image: repeating-linear-gradient(45deg,
+    rgba(255,255,255,0.2) 0 3px,
+    transparent 3px 6px);
+}
+.goal-net.top { left: -1px; }
+.goal-net.bottom { right: -1px; }
+
+/* 玩家：小色点，带微阴影；通过多个 jitter 动画营造拉扯感 */
+.player {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  box-shadow:
+    0 2px 3px rgba(0,0,0,0.55),
+    inset 0 -1.5px 2px rgba(0,0,0,0.35),
+    inset 0 1.5px 2px rgba(255,255,255,0.3);
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform;
+}
+/* 我方红队 */
+.player.home {
+  background: radial-gradient(circle at 30% 25%, #ff6a6a, #d62828 75%, #7a1010);
+  border: 1px solid rgba(255,255,255,0.85);
+}
+/* 敌方蓝队 */
+.player.away {
+  background: radial-gradient(circle at 30% 25%, #6aa8ff, #1e5fc8 75%, #0f3a8a);
+  border: 1px solid rgba(255,255,255,0.85);
+}
+/* 守门员：黄色衣，略大 */
+.player.gk {
+  background: radial-gradient(circle at 30% 25%, #ffe066, #f5a623 70%, #a36300);
+  border: 1px solid rgba(20,20,20,0.85);
+  width: 12px; height: 12px;
+  margin: -6px 0 0 -6px;
+}
+
+/* ========== 队形整体潮汐：攻守一起左右推进/回防 ==========
+   红队进攻 → 双方都向右平移（红压上、蓝退守）
+   蓝队进攻 → 双方都向左平移
+   单次平移 50px 历时 10s ≈ 5px/s，远低于 15px/s 上限
+   使用独立 CSS `translate` 属性，不与子元素 transform 冲突
+*/
+.formation {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  animation: formation-tide 24s ease-in-out infinite;
+  will-change: translate;
+}
+@keyframes formation-tide {
+  0%   { translate: 0 0; }
+  25%  { translate: 50px 0; }   /* 红队压上 */
+  50%  { translate: 0 0; }
+  75%  { translate: -50px 0; }  /* 蓝队压上 */
+  100% { translate: 0 0; }
+}
+
+/* 个人小幅游走：振幅 ≤ ±10px，周期 ≥ 6s，约 ≤ 5px/s */
+@keyframes pjit-fwd-1 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(8px,-6px)} 50%{transform:translate(10px,5px)} 75%{transform:translate(-6px,-4px)} }
+@keyframes pjit-fwd-2 { 0%,100%{transform:translate(0,0)} 30%{transform:translate(-9px,5px)} 60%{transform:translate(6px,-7px)} 85%{transform:translate(8px,4px)} }
+@keyframes pjit-fwd-3 { 0%,100%{transform:translate(0,0)} 20%{transform:translate(5px,7px)} 55%{transform:translate(-8px,-5px)} 80%{transform:translate(9px,-3px)} }
+
+@keyframes pjit-mid-1 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(9px,-5px)} 55%{transform:translate(-7px,6px)} 80%{transform:translate(-5px,-7px)} }
+@keyframes pjit-mid-2 { 0%,100%{transform:translate(0,0)} 30%{transform:translate(-8px,5px)} 60%{transform:translate(7px,7px)} 85%{transform:translate(6px,-6px)} }
+@keyframes pjit-mid-3 { 0%,100%{transform:translate(0,0)} 22%{transform:translate(6px,6px)} 50%{transform:translate(-9px,-4px)} 78%{transform:translate(4px,-8px)} }
+
+@keyframes pjit-def-1 { 0%,100%{transform:translate(0,0)} 30%{transform:translate(7px,-5px)} 60%{transform:translate(-6px,5px)} 85%{transform:translate(5px,6px)} }
+@keyframes pjit-def-2 { 0%,100%{transform:translate(0,0)} 25%{transform:translate(-7px,4px)} 55%{transform:translate(6px,6px)} 80%{transform:translate(8px,-4px)} }
+@keyframes pjit-def-3 { 0%,100%{transform:translate(0,0)} 35%{transform:translate(5px,5px)} 65%{transform:translate(-7px,-5px)} 90%{transform:translate(6px,-6px)} }
+
+@keyframes pjit-gk    { 0%,100%{transform:translate(0,0)} 33%{transform:translate(4px,-5px)} 66%{transform:translate(5px,5px)} }
+
+/* 不同球员错开步调 */
+.player.fwd                       { animation: pjit-fwd-1 8s ease-in-out infinite; animation-delay: -1.2s; }
+.player.fwd:nth-of-type(3n+1)     { animation: pjit-fwd-2 9s ease-in-out infinite; animation-delay: -2.7s; }
+.player.fwd:nth-of-type(3n+2)     { animation: pjit-fwd-3 10s ease-in-out infinite; animation-delay: -5.5s; }
+
+.player.mid                       { animation: pjit-mid-1 9s ease-in-out infinite; animation-delay: -3.4s; }
+.player.mid:nth-of-type(3n+1)     { animation: pjit-mid-2 10s ease-in-out infinite; animation-delay: -6.1s; }
+.player.mid:nth-of-type(3n+2)     { animation: pjit-mid-3 11s ease-in-out infinite; animation-delay: -2.2s; }
+
+.player.def                       { animation: pjit-def-1 10s ease-in-out infinite; animation-delay: -4.0s; }
+.player.def:nth-of-type(4n+1)     { animation: pjit-def-2 11s ease-in-out infinite; animation-delay: -7.3s; }
+.player.def:nth-of-type(4n+2)     { animation: pjit-def-3 12s ease-in-out infinite; animation-delay: -1.8s; }
+.player.def:nth-of-type(4n+3)     { animation: pjit-def-1 11s ease-in-out infinite; animation-delay: -9.6s; }
+
+.player.gk                        { animation: pjit-gk 9s ease-in-out infinite !important; animation-delay: -2s !important; }
+
+/* 9 宫格 */
+.grid {
+  position: absolute; inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+.cell {
+  position: relative;
+  border: 1px dashed rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cell:hover { background: rgba(255,255,255,0.06); }
+.cell.flash-success { animation: flashSuccess 0.5s; }
+.cell.flash-fail { animation: flashFail 0.5s; }
+.cell .ball {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  animation: ballPulse 0.9s ease-in-out infinite;
+}
+
+@keyframes ballPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+@keyframes flashSuccess {
+  0% { background: rgba(80, 220, 100, 0.6); }
+  100% { background: transparent; }
+}
+@keyframes flashFail {
+  0% { background: rgba(220, 80, 80, 0.5); }
+  100% { background: transparent; }
+}
+
+.pitch-tip {
+  text-align: center;
+  font-size: 12px; color: var(--muted);
+  margin: 8px 0 0;
+}
+.pitch-tip-bonus {
+  margin-top: 4px;
+  color: #f5d76e;
+  font-weight: 600;
+}
+
+/* ============ 比赛计时器 ============ */
+.match-clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 6px 14px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffe6a8;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.match-clock .clock-icon { font-size: 14px; }
+.match-clock.stoppage {
+  background: rgba(180, 60, 60, 0.4);
+  border-color: rgba(255, 140, 140, 0.55);
+  color: #ffd2d2;
+  animation: clockPulse 1.2s ease-in-out infinite;
+}
+.match-clock .clock-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,200,80,0.25);
+  color: #ffe6a8;
+  display: none;
+  letter-spacing: 0;
+}
+.match-clock.stoppage .clock-tag {
+  display: inline-block;
+  background: rgba(255,90,90,0.4);
+  color: #fff;
+}
+.match-clock.fulltime {
+  background: rgba(120,120,120,0.35);
+  color: #ddd;
+}
+@keyframes clockPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,90,90,0.45); }
+  50%     { box-shadow: 0 0 0 6px rgba(255,90,90,0); }
+}
+
+/* ============ 多卡片掉落徽章/计数 ============ */
+.drop-badge {
+  position: absolute;
+  top: -14px; left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ff7a30, #ffd24a);
+  color: #2a1a00;
+  box-shadow: 0 4px 12px rgba(255, 160, 60, 0.55);
+  white-space: nowrap;
+  letter-spacing: 1px;
+  display: none;
+}
+.drop-badge.show { display: inline-block; }
+.drop-counter {
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffd24a;
+  background: rgba(0,0,0,0.4);
+  padding: 3px 9px;
+  border-radius: 999px;
+  display: none;
+}
+.drop-counter.show { display: inline-block; }
+.country-card { position: relative; }
+
+/* ============ Report overlay (在球场正中) ============ */
+.report-overlay {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 80%;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #fff;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.95), 0 0 12px rgba(0,0,0,0.7);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(.2,.8,.2,1.2);
+  z-index: 5;
+  backdrop-filter: blur(1px);
+}
+.report-overlay.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.report-overlay .placeholder { color: var(--muted); font-weight: 400; font-size: 14px; }
+.report-overlay.success { color: #b6ffc4; border-color: rgba(140, 240, 160, 0.5); }
+.report-overlay.fail    { color: #ffb6b6; border-color: rgba(240, 130, 130, 0.5); }
+.report-overlay.neutral { color: #e8eaff; border-color: rgba(200, 210, 240, 0.4); }
+.report-overlay.win {
+  color: var(--gold);
+  border-color: var(--gold);
+  font-size: 19px;
+  box-shadow: 0 0 24px rgba(255, 210, 74, 0.7);
+  animation: winPulse 0.6s;
+}
+@keyframes winPulse {
+  0% { transform: translate(-50%, -50%) scale(0.7); }
+  60% { transform: translate(-50%, -50%) scale(1.08); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ============ Progress section ============ */
+.progress-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* ============ Report card ============ */
+.report-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+.report-head {
+  display: flex; align-items: center; gap: 8px;
+}
+.mic { font-size: 18px; }
+.report-title { flex: 1; font-weight: 700; }
+.globe-btn {
+  background: transparent; border: none;
+  font-size: 22px; cursor: pointer;
+  color: inherit;
+}
+.spin { display: inline-block; animation: spin 6s linear infinite; }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.report-body {
+  min-height: 56px;
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 10px;
+  font-size: 15px; line-height: 1.5;
+  display: flex; align-items: center;
+}
+.report-body .placeholder { color: var(--muted); }
+.report-body.success { color: #8ef5a4; }
+.report-body.fail { color: #ff9f9f; }
+.report-body.win {
+  color: var(--gold);
+  font-weight: 700;
+  animation: winPulse 0.6s;
+}
+@keyframes winPulse {
+  0% { transform: scale(0.95); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.progress-wrap {
+  position: relative;
+  margin: 6px auto 2px;
+  padding: 14px 18px;
+  cursor: pointer;
+  width: fit-content;
+}
+.progress-track {
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  transform: translateY(-50%);
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #cd7f32 0%, #cd7f32 33%, #c8d0d6 33%, #c8d0d6 66%, #f5c542 66%, #f5c542 100%);
+  transition: width 0.5s ease;
+  box-shadow: 0 0 12px rgba(255, 210, 74, 0.5);
+}
+.progress-balls {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  z-index: 1;
+}
+.prog-ball {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid rgba(255,255,255,0.15);
+  filter: grayscale(1) brightness(0.5);
+  transition: all 0.4s cubic-bezier(.2,.8,.2,1.2);
+}
+.prog-ball.lit-1 {
+  filter: none;
+  color: #fff;
+  background: radial-gradient(circle at 30% 30%, #f0a060, #cd7f32 60%, #6a3d12 100%);
+  border-color: #ffb066;
+  box-shadow: 0 0 16px rgba(205, 127, 50, 0.9), 0 0 30px rgba(205, 127, 50, 0.5);
+  transform: scale(1.1);
+}
+.prog-ball.lit-2 {
+  filter: none;
+  color: #fff;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #c8d0d6 60%, #6a7480 100%);
+  border-color: #e8eef2;
+  box-shadow: 0 0 18px rgba(220, 230, 240, 0.95), 0 0 34px rgba(180, 200, 220, 0.6);
+  transform: scale(1.12);
+}
+.prog-ball.lit-3 {
+  filter: none;
+  color: #fff;
+  background: radial-gradient(circle at 30% 30%, #fff5b0, #f5c542 55%, #8a6a10 100%);
+  border-color: #fff09a;
+  box-shadow: 0 0 22px rgba(255, 210, 74, 1), 0 0 44px rgba(255, 210, 74, 0.7);
+  transform: scale(1.18);
+  animation: goldPulse 1.4s ease-in-out infinite;
+}
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 22px rgba(255, 210, 74, 1), 0 0 44px rgba(255, 210, 74, 0.6); }
+  50%      { box-shadow: 0 0 30px rgba(255, 210, 74, 1), 0 0 60px rgba(255, 210, 74, 0.9); }
+}
+
+/* ============ Modal ============ */
+.modal { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+.modal.hidden { display: none; }
+.modal-mask { position: absolute; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(2px); }
+.modal-panel {
+  position: relative;
+  width: min(440px, 92vw);
+  max-height: 86vh;
+  background: linear-gradient(180deg, #142318, #0c170f);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 18px 16px 22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  overflow: auto;
+}
+.modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.modal-head h2 { margin: 0; font-size: 18px; }
+.counts { font-size: 12px; color: var(--muted); display: flex; gap: 14px; }
+.counts b { color: var(--accent); font-weight: 700; }
+.modal-close {
+  background: transparent; border: none; color: var(--muted);
+  font-size: 18px; cursor: pointer;
+}
+
+/* 球形 48 坑位 */
+.world-globe {
+  position: relative;
+  width: 100%;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: radial-gradient(ellipse at 35% 25%, #2c4a36, #0e1b13 75%);
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 0 30px rgba(80,200,120,0.15);
+}
+.tier {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 14px;
+}
+.tier-1 { background: linear-gradient(180deg, rgba(255,210,74,0.12), rgba(255,210,74,0.04)); }
+.tier-2 { background: linear-gradient(180deg, rgba(120,200,255,0.12), rgba(120,200,255,0.04)); }
+.tier-3 { background: linear-gradient(180deg, rgba(200,120,255,0.12), rgba(200,120,255,0.04)); }
+
+.slot {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--muted);
+  cursor: pointer;
+  transition: transform 0.15s;
+  overflow: hidden;
+}
+.slot:hover { transform: scale(1.08); }
+.slot.locked { color: var(--accent); }
+.slot.filled {
+  background: #fff;
+  color: #000;
+  font-size: 18px;
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(255,210,74,0.7);
+}
+.slot.just-dropped { animation: slotIn 0.6s; }
+@keyframes slotIn {
+  0% { transform: scale(0.2); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.world-tip { text-align: center; font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+
+/* ============ Country card ============ */
+.card-drop {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 60;
+}
+.card-drop.hidden { display: none; }
+
+.country-card {
+  width: min(280px, 80vw);
+  background: linear-gradient(180deg, #1b2e22, #0e1b13);
+  border-radius: 16px;
+  border: 2px solid var(--accent);
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  animation: cardDrop 0.7s cubic-bezier(.2,.8,.2,1.2);
+  box-shadow: 0 0 30px rgba(255,210,74,0.5);
+}
+.country-card.big { animation: none; }
+.country-card::before {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, transparent, rgba(255,210,74,0.6), transparent);
+  background-size: 200% 200%;
+  animation: borderShine 2.5s linear infinite;
+  z-index: -1;
+}
+@keyframes borderShine {
+  from { background-position: -100% 0; }
+  to { background-position: 200% 0; }
+}
+@keyframes cardDrop {
+  0% { transform: translateY(-40vh) rotate(-12deg); opacity: 0; }
+  70% { transform: translateY(20px) rotate(3deg); opacity: 1; }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+.country-card .flag {
+  width: 80px; height: 80px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background-size: cover; background-position: center;
+  font-size: 50px;
+  display: flex; align-items: center; justify-content: center;
+  background-color: #fff;
+}
+.country-card .name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.country-card .desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+.country-card .star { font-size: 12px; color: var(--accent); margin-bottom: 12px; }
+
+.btn-confirm, .btn-primary, .btn-secondary {
+  border: none; border-radius: 18px;
+  padding: 8px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-confirm, .btn-primary {
+  background: linear-gradient(135deg, #ffd24a, #ff9f1a);
+  color: #2a1900;
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+/* ============ Unlock modal ============ */
+.unlock-card {
+  position: relative;
+  width: min(320px, 84vw);
+  background: linear-gradient(180deg, #2a1d0a, #14110a);
+  border: 2px solid var(--gold);
+  border-radius: 18px;
+  padding: 24px 20px 20px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255,210,74,0.5);
+}
+.unlock-anim {
+  font-size: 60px;
+  animation: bounce 1s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.unlock-card h3 { color: var(--gold); margin: 8px 0 4px; font-size: 16px; }
+.unlock-tier { color: var(--muted); font-size: 12px; margin: 0 0 16px; }
+.unlock-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ============ Toast ============ */
+.toast {
+  position: fixed; left: 50%; top: 80px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  z-index: 100;
+  animation: toastIn 0.3s;
+}
+.toast.hidden { display: none; }
+@keyframes toastIn {
+  from { transform: translate(-50%, -10px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
